@@ -79,7 +79,7 @@ func (s *TrapService) Break(ctx context.Context, id int64) error {
 	if _, err := s.traps.Get(ctx, id); err != nil {
 		return err
 	}
-	return s.traps.SetStatus(ctx, id, model.TrapBroken)
+	return s.traps.SetStatus(ctx, id, model.TrapFault)
 }
 
 func (s *TrapService) CanUse(ctx context.Context, id int64) (bool, error) {
