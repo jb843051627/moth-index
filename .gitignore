@@ -1,0 +1,8 @@
+*.db
+*.db-shm
+*.db-wal
+*.log
+_docker/
+cases/
+generate_moth_index.py
+__pycache__/
