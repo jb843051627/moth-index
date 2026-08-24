@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>moth-index 夜行调查</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">NOCTURNAL FIELD NOTEBOOK</p>
+        <h1>夜行样本台</h1>
+        <p class="lede">把诱捕器的一夜，整理成可复核的生态证据。</p>
+      </div>
+      <span id="health" class="status">连接中</span>
+    </header>
+    <section class="grid">
+      <article class="panel accent">
+        <p class="eyebrow">STATIONS</p>
+        <h2 id="station-count">-</h2>
+        <p>活跃调查站点</p>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">FIELD RHYTHM</p>
+        <h2>夜间批次</h2>
+        <p>站点、诱捕器、样本和环境读数在同一条时间线上汇合。</p>
+      </article>
+      <article class="panel dark">
+        <p class="eyebrow">REVIEW QUEUE</p>
+        <h2>先看证据，再下结论</h2>
+        <p>分类复核由 Go 服务排队处理，现场记录保留原始上下文。</p>
+      </article>
+    </section>
+    <section class="panel list-panel">
+      <div class="section-head"><div><p class="eyebrow">LIVE SITES</p><h2>正在工作的站点</h2></div><button id="refresh">刷新</button></div>
+      <div id="stations" class="station-list"><p class="muted">正在读取站点...</p></div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
