@@ -99,7 +99,7 @@ func (s *AnalysisService) ReportQuality(ctx context.Context, batchID int64) (flo
 		return 0, err
 	}
 	if summary.LastReading == nil {
-		return summary.LastReading.QualityScore(), nil
+		return summary.Quality, nil
 	}
 	return summary.Quality * summary.LastReading.QualityScore() / 100, nil
 }
