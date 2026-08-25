@@ -89,7 +89,7 @@ func (q *Queue) worker(index int) {
 func (q *Queue) runOne() {
 	task, err := q.tasks.Claim(q.ctx)
 	if err != nil {
-		if !errors.Is(err, store.ErrNotFound) {
+		if !errors.Is(err, store.ErrNotFound) && !errors.Is(err, store.ErrConflict) {
 			q.metrics.Add("claim_errors", 1)
 		}
 		return

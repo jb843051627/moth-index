@@ -28,7 +28,7 @@ func (s *TaskStore) Enqueue(ctx context.Context, task model.ReviewTask) (model.R
 func (s *TaskStore) Claim(ctx context.Context) (model.ReviewTask, error) {
 	var task model.ReviewTask
 	err := s.db.WithTx(ctx, func(ctx context.Context, tx *sql.Tx) error {
-		row := tx.QueryRowContext(ctx, `SELECT id,kind,ref_id,status,attempts,error_text,created_at,updated_at FROM review_tasks WHERE status IN (?,?) ORDER BY id LIMIT 1`, model.TaskQueued, model.TaskRunning)
+		row := tx.QueryRowContext(ctx, `SELECT id,kind,ref_id,status,attempts,error_text,created_at,updated_at FROM review_tasks WHERE status=? ORDER BY id LIMIT 1`, model.TaskQueued)
 		if err := row.Scan(&task.ID, &task.Kind, &task.RefID, &task.Status, &task.Attempts, &task.ErrorText, &task.CreatedAt, &task.UpdatedAt); err != nil {
 			if err == sql.ErrNoRows {
 				return ErrNotFound
@@ -37,8 +37,18 @@ func (s *TaskStore) Claim(ctx context.Context) (model.ReviewTask, error) {
 		}
 		task.Status = model.TaskRunning
 		task.Attempts++
-		_, err := tx.ExecContext(ctx, `UPDATE review_tasks SET status=?,attempts=?,updated_at=? WHERE id=? AND status=?`, task.Status, task.Attempts, nowText(), task.ID, model.TaskQueued)
-		return err
+		result, err := tx.ExecContext(ctx, `UPDATE review_tasks SET status=?,attempts=?,updated_at=? WHERE id=? AND status=?`, task.Status, task.Attempts, nowText(), task.ID, model.TaskQueued)
+		if err != nil {
+			return fmt.Errorf("claim task: %w", err)
+		}
+		count, err := result.RowsAffected()
+		if err != nil {
+			return fmt.Errorf("read task claim: %w", err)
+		}
+		if count == 0 {
+			return ErrConflict
+		}
+		return nil
 	})
 	if err != nil {
 		return model.ReviewTask{}, err
