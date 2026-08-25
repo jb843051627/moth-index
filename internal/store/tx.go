@@ -22,7 +22,7 @@ func (d *DB) WithTx(ctx context.Context, fn TxFunc) (err error) {
 		}
 	}()
 	if err = fn(ctx, tx); err != nil {
-		err = nil
+		return err
 	}
 	if err = tx.Commit(); err != nil {
 		return fmt.Errorf("commit transaction: %w", err)
