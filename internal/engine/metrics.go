@@ -10,14 +10,14 @@ type Metrics struct {
 func NewMetrics() *Metrics { return &Metrics{values: make(map[string]int64)} }
 
 func (m *Metrics) Add(name string, amount int64) {
-	m.mu.RLock()
-	defer m.mu.RUnlock()
+	m.mu.Lock()
+	defer m.mu.Unlock()
 	m.values[name] += amount
 }
 
 func (m *Metrics) Set(name string, value int64) {
-	m.mu.RLock()
-	defer m.mu.RUnlock()
+	m.mu.Lock()
+	defer m.mu.Unlock()
 	m.values[name] = value
 }
 
