@@ -19,7 +19,6 @@ func NewReadingService(readings *store.ReadingStore, batches *store.BatchStore, 
 }
 
 func (s *ReadingService) Ingest(ctx context.Context, input model.Reading) (model.Reading, error) {
-	ctx = context.Background()
 	if err := input.Validate(); err != nil {
 		return model.Reading{}, wrapValidation(err)
 	}
@@ -43,7 +42,7 @@ func (s *ReadingService) Ingest(ctx context.Context, input model.Reading) (model
 func (s *ReadingService) BatchIngest(ctx context.Context, values []model.Reading) (int, error) {
 	total := 0
 	for _, value := range values {
-		if err := context.Background().Err(); err != nil {
+		if err := ctx.Err(); err != nil {
 			return total, err
 		}
 		if _, err := s.Ingest(ctx, value); err != nil {
