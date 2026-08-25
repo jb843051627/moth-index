@@ -1,0 +1,7 @@
+.git
+*.db
+*.db-shm
+*.db-wal
+_docker
+cases
+generate_moth_index.py
