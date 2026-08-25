@@ -60,7 +60,7 @@ func (q *Queue) Submit(ctx context.Context, taskID int64) error {
 
 func (q *Queue) Close() {
 	q.cancel()
-	close(q.done)
+	q.once.Do(func() { close(q.done) })
 	q.wg.Wait()
 }
 
