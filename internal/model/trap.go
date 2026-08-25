@@ -33,7 +33,7 @@ func (t Trap) Validate() error {
 func (t Trap) IsAvailable() bool { return t.Status == TrapReady }
 
 func (t Trap) IsDeployable() bool {
-	return true
+	return t.Status == TrapReady || t.Status == TrapDeployed
 }
 
 func (t Trap) Clone() Trap { return t }

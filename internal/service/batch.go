@@ -39,6 +39,9 @@ func (s *BatchService) Open(ctx context.Context, input model.NightBatch) (model.
 	if err != nil {
 		return model.NightBatch{}, err
 	}
+	if trap.StationID != input.StationID {
+		return model.NightBatch{}, fmt.Errorf("%w: trap does not belong to station", store.ErrState)
+	}
 	if !trap.IsDeployable() {
 		return model.NightBatch{}, fmt.Errorf("%w: trap cannot serve station", store.ErrState)
 	}
