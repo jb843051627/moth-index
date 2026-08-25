@@ -73,10 +73,10 @@ func (s *SpecimenService) Classify(ctx context.Context, id int64, taxon model.Ta
 	if _, err := s.taxonomy.Upsert(ctx, taxon); err != nil {
 		return model.Specimen{}, err
 	}
-	if err := s.specimens.UpdateClassification(ctx, id, taxon.Family, taxon.Genus, taxon.Species, model.SpecimenAccepted); err != nil {
+	if err := s.specimens.UpdateClassification(ctx, id, taxon.Family, taxon.Genus, taxon.Species, model.SpecimenPending); err != nil {
 		return model.Specimen{}, err
 	}
-	specimen.Family, specimen.Genus, specimen.Species, specimen.Status = taxon.Family, taxon.Genus, taxon.Species, model.SpecimenAccepted
+	specimen.Family, specimen.Genus, specimen.Species, specimen.Status = taxon.Family, taxon.Genus, taxon.Species, model.SpecimenPending
 	return specimen, s.reports.Audit(ctx, "specimen", id, "classify", taxon.ScientificName())
 }
 
