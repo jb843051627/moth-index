@@ -28,7 +28,7 @@ func (c *ReadingCache) Put(batchID int64, reading model.Reading) {
 func (c *ReadingCache) Get(batchID int64) []model.Reading {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	return c.values[batchID]
+	return cloneReadings(c.values[batchID])
 }
 
 func (c *ReadingCache) All() map[int64][]model.Reading {
@@ -36,7 +36,7 @@ func (c *ReadingCache) All() map[int64][]model.Reading {
 	defer c.mu.RUnlock()
 	output := make(map[int64][]model.Reading, len(c.values))
 	for id, values := range c.values {
-		output[id] = values
+		output[id] = cloneReadings(values)
 	}
 	return output
 }
